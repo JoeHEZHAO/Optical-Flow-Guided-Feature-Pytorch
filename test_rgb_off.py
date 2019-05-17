@@ -1,7 +1,7 @@
 """ Testing the code after training finished
 Update 12.21.2018: Be able to do cropping when test for OFF accuracy; Test accuracy on split 1 is 79.00%; Still need to improve to 90.5%;
 
-Update 2019.02.10: 
+Update 2019.02.10:
     1. TODO: save score locally and run in python script/jupyternotebook;
     2. TODO: code for flow branch OFF training;
     3. TODO: code for Feature Generation for UCF101;
@@ -123,13 +123,13 @@ def eval_video(video_data):
             # rst3 = rst3.reshape(num_segments - 1, 10, 101)
             # rst4 = rst4.reshape(num_segments - 1, 10, 101)
 
-            ''' 
+            '''
                 Merge RGB, OFF 7x7, OFF 14x14:
                 According to original implementation, np.mean happens after np.max for crpp dimension ==> [24/25, 101]
                 https://github.com/kevin-ssy/Optical-Flow-Guided-Feature/blob/master/tools/ensemble_test.py;
                 https://github.com/kevin-ssy/Optical-Flow-Guided-Feature/blob/master/pyActionRecog/utils/video_funcs.py;
                 np.max, np.mean result shape is [101], then perform weighted average, then infer the final class label;
-        
+
                 Different when do crop mean first ? Should not be;
             '''
 
