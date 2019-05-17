@@ -27,3 +27,6 @@ Paper reference [CVPR2018 OFF for Action Recogniton](https://arxiv.org/pdf/1711.
 + Current best accuracy is 95.24%, which is 0.26% less than 95.5% of the original caffe implementaion [link](https://github.com/kevin-ssy/Optical-Flow-Guided-Feature)
 + There is definitely room to boost current 95.24% accuracy, considering training-batch for now is much less than 128 (GPU Memory Limitation, so train-batch in train_off.py is 40-50);
 + Weights for other dataset splits and HMDB would not be provided. Feel free to train your own version;
+
+## Disclaimer:
++ Code has not been polished, yet functionable;
