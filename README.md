@@ -1,5 +1,5 @@
 # OFF-Action-Recogniton
-Optical Flow Guided Feature for Action Recognition-Pytorch
+Optical Flow Guided Feature for Action Recognition, in Pytorch fashion;
 
 Paper reference [CVPR2018 OFF for Action Recogniton](https://arxiv.org/pdf/1711.11152.pdf)
 
@@ -15,10 +15,10 @@ Paper reference [CVPR2018 OFF for Action Recogniton](https://arxiv.org/pdf/1711.
 + Temporal Segment Consensus module in basic_ops.py
 + Translated OFF Network in RGB_OFF.py/Flow_OFF.py
 + Rewrite dataset.py to dataset_off.py, for frame sampling interval consistency, as mentioned in the paper Section 4.2, last paragraph;
-+
 
 ## Evaluate Performance
-+ RGB OFF evaluation score [link](https://drive.google.com/file/d/1e5yHqC-BX22lXoSnB2GM2NqINxGbcyId/view?usp=sharing)
-+ Flow OFF evaluation score [ling](https://drive.google.com/file/d/1O3P2UH0_kWvhW_0VVBIcsJIk_iX2xJI0/view?usp=sharing)
++ RGB OFF evaluation score npz [download](https://drive.google.com/file/d/1e5yHqC-BX22lXoSnB2GM2NqINxGbcyId/view?usp=sharing)
++ Flow OFF evaluation score npz [download](https://drive.google.com/file/d/1O3P2UH0_kWvhW_0VVBIcsJIk_iX2xJI0/view?usp=sharing)
 + score_fusion.ipynb to fuse scores from RGB and Flow; Try different weight for optimal accuracy;
 + Current best accuracy is 95.24%, which is 0.26% less than 95.5% of the original caffe implementaion [link](https://github.com/kevin-ssy/Optical-Flow-Guided-Feature)
++ There is definitely room to boost current 95.24% accuracy, considering training-batch for now is much less than 128 (GPU Memory Limitation, so train-batch in train_off.py is 40-50);
