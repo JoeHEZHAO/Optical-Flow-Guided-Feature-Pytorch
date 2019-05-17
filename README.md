@@ -13,7 +13,7 @@ Paper reference [CVPR2018 OFF for Action Recogniton](https://arxiv.org/pdf/1711.
 + Original Optical Flow Guided Feature, follow [caffe prototxt](https://github.com/kevin-ssy/Optical-Flow-Guided-Feature/blob/master/models/ucf101/rgb_off/1/train.prototxt)
 + Sobel Operator, follow [wiki](https://en.wikipedia.org/wiki/Sobel_operator)
 + Temporal Segment Consensus module in basic_ops.py
-+ Translated OFF Network in RGB_OFF.py/Flow_OFF.py
++ Pytorch version of OFF Network are RGB_OFF.py and Flow_OFF.py
 + Rewrite dataset.py (from tsn-pytorch above) to dataset_off.py, for frame sampling interval consistency, as mentioned in the paper Section 4.2, last paragraph;
 
 ## Evaluate Performance: UCF-101 Split 1
