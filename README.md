@@ -6,6 +6,7 @@ Paper reference [CVPR2018 OFF for Action Recogniton](https://arxiv.org/pdf/1711.
 ## DataSet & Weights Preparation
 + Prepare UCF-101 and HMDB51 dataset follow instruction of [tsn-pytorch](https://github.com/yjxiong/tsn-pytorch);
 + Prepare pretrained UCF-101 weights from tsn-pytorch;
++ Follow data split by official website;
 
 ## Network Modules
 + Temporal Segment Network (TSN) & DataLoader, follow [tsn-pytorch](https://github.com/yjxiong/tsn-pytorch)
@@ -16,5 +17,8 @@ Paper reference [CVPR2018 OFF for Action Recogniton](https://arxiv.org/pdf/1711.
 + Rewrite dataset.py to dataset_off.py, for frame sampling interval consistency, as mentioned in the paper Section 4.2, last paragraph;
 +
 
-## Performance
-
+## Evaluate Performance
++ RGB OFF evaluation score [link](https://drive.google.com/file/d/1e5yHqC-BX22lXoSnB2GM2NqINxGbcyId/view?usp=sharing)
++ Flow OFF evaluation score [ling](https://drive.google.com/file/d/1O3P2UH0_kWvhW_0VVBIcsJIk_iX2xJI0/view?usp=sharing)
++ score_fusion.ipynb to fuse scores from RGB and Flow; Try different weight for optimal accuracy;
++ Current best accuracy is 95.24%, which is 0.26% less than 95.5% of the original caffe implementaion [link](https://github.com/kevin-ssy/Optical-Flow-Guided-Feature)
