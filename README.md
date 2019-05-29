@@ -5,6 +5,7 @@ Paper reference [CVPR2018 OFF for Action Recogniton](https://arxiv.org/pdf/1711.
 
 ## DataSet & Weights Preparation
 + Prepare UCF-101 and HMDB51 dataset follow instruction of [tsn-pytorch](https://github.com/yjxiong/tsn-pytorch);
++ Put generated train/test split txt files into data folder;
 + Prepare pretrained UCF-101 weights from tsn-pytorch;
 + Follow data split by official website;
 + caffemodel converted tsn pretrained weight [link](https://drive.google.com/open?id=1XdBp2qUGef1rR7UrYpZLAkWFk0Fq0G-l),
