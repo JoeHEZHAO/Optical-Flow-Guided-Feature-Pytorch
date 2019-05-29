@@ -205,13 +205,16 @@ def pretrained_bninception_off(batch, num_seg):
     #     print("Missing motion branch param {}".format(key))
 
     missing_dict = {k:v for k, v in model_state.items() if k not in checkpoint}
+    loading_dict = {k:v for k, v in model_state.items() if k in checkpoint}
     for key, value in missing_dict.items():
         print("Missing {}".format(key))
 
-    model_state.update(base_dict)
+    for key, value in loading_dict.items():
+        print("Loading {}".format(key))
 
+    model_state.update(base_dict)
     net.load_state_dict(model_state)
-    print("Load weights and bias from RGB_OFF_caffemodel")
+    print("Finish Load weights and bias from RGB_OFF_caffemodel")
     return net
 
 def fine_tune_bninception_off(batch, num_seg):

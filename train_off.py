@@ -89,7 +89,6 @@ train_loader = torch.utils.data.DataLoader(
     batch_size=num_batch, shuffle=True,
     num_workers=1, pin_memory=True, drop_last=True
 )
-# print(len(train_loader))
 
 # val_loader = torch.utils.data.DataLoader(
 #     TSNDataSet("", '../data/ucf101_rgb_val_split_1.txt', num_segments=num_seg,

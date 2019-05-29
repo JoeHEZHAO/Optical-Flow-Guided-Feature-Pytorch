@@ -7,6 +7,8 @@ Paper reference [CVPR2018 OFF for Action Recogniton](https://arxiv.org/pdf/1711.
 + Prepare UCF-101 and HMDB51 dataset follow instruction of [tsn-pytorch](https://github.com/yjxiong/tsn-pytorch);
 + Prepare pretrained UCF-101 weights from tsn-pytorch;
 + Follow data split by official website;
++ caffemodel converted tsn pretrained weight [link](https://drive.google.com/open?id=1XdBp2qUGef1rR7UrYpZLAkWFk0Fq0G-l),
+ see model_utils.py for detail information on loading procedure.
 
 ## Network Modules
 + Temporal Segment Network (TSN) & DataLoader, follow [tsn-pytorch](https://github.com/yjxiong/tsn-pytorch)
