@@ -13,13 +13,14 @@ Notice: The sampling strategy is also different;
 """
 
 from __future__ import division
-import torch
 import os, sys
 import numpy as np
-from torch.nn.utils import clip_grad_norm
-sys.path.append(os.path.join(os.getcwd(), '..'))
 
-from baseModel import *
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.nn.utils import clip_grad_norm
+
 from transforms import *
 from model_utils import *
 from basic_ops import *
@@ -30,7 +31,8 @@ num_seg = 7
 num_batch = 42 # Should be 128, if result not good, then try to run on server;
 
 # Init feature extractor network, output [batch, 192, 56, 56] tensor
-net = fine_tune_bninception_off(batch=num_batch, num_seg=num_seg).cuda()
+# net = fine_tune_bninception_off(batch=num_batch, num_seg=num_seg).cuda()
+net = pretrained_bninception_off(num_batch, num_seg).cuda()
 
 # Freeze most parameter
 # any(substring in string for substring in substring_list)
@@ -54,11 +56,6 @@ for m in net.modules():
         m.weight.requires_grad = False
         m.bias.requires_grad = False
 
-# idx = 0
-# for name, param in net.named_parameters():
-#     idx += 1
-#     if param.requires_grad:
-#         print(idx, name, param.shape)
 
 # Define loss func and optimizer
 criterion = nn.CrossEntropyLoss()
@@ -78,7 +75,7 @@ optimizer = optim.Adam(param, lr = 0.001, betas= (0.9, 0.99), weight_decay=0.000
 normalize = IdentityTransform()
 
 train_loader = torch.utils.data.DataLoader(
-    TSNDataSet("", '../data/ucf101_rgb_train_split_1.txt' , num_segments=num_seg,
+    TSNDataSet("", 'data/ucf101_rgb_train_split_1.txt' , num_segments=num_seg,
                 new_length=1,
                 modality='RGB',
                 image_tmpl="img_{:05d}.jpg" if 'RGB' in ["RGB", "RGBDiff"] else args.flow_prefix+"{}_{:05d}.jpg",
@@ -92,7 +89,7 @@ train_loader = torch.utils.data.DataLoader(
     batch_size=num_batch, shuffle=True,
     num_workers=1, pin_memory=True, drop_last=True
 )
-print(len(train_loader))
+# print(len(train_loader))
 
 # val_loader = torch.utils.data.DataLoader(
 #     TSNDataSet("", '../data/ucf101_rgb_val_split_1.txt', num_segments=num_seg,
@@ -111,55 +108,11 @@ print(len(train_loader))
 #     num_workers=1, pin_memory=True,  drop_last=True)
 # print(len(val_loader))
 
-
-# for epoch in range(20):
-#     for idx, (input, target) in enumerate(train_loader):
-#         import pdb;pdb.set_trace()
-#         print("epoch {}, batch_id {}".format(epoch, idx))
-#         input = input.permute(1,0,2,3,4).cuda()
-
-#         '''
-#             No grad operation save memory
-#             Get intermediate feature from BNInception Network
-#             Return a list of sequence [batch, channel, height, width]
-#             Compute feature diff offline
-#         '''
-
-#         feature_diff_list = []
-#         feature_list = []
-#         with torch.no_grad():
-#             for i in input:
-#                 feature_list.append(featureNet.extract_feature(i))
-#             # print("feature length is {}".format(len(feature_list)))
-
-#             for i, j in zip(feature_list[:-1], feature_list[1:]):
-#                 feature_diff_list.append(j-i)
-#             # print("feature diff length is {}".format(len(feature_diff_list)))
-
-#         ''' Start training mse process '''
-#         net.train(feature_list, feature_diff_list)
-
-#         ''' Start training gan process '''
-
-#     ''' save model after each epoch '''
-#     is_best = None
-#     save_checkpoint({
-#         'epoch': epoch + 1,
-#         'arch': 'BNInception',
-#         'state_dict': net.state_dict(),
-#         'optimizer' : net.optimizer_g.state_dict(),
-#     }, is_best)
-
 ''' fine tune motion-branch/fc layer of OFF network '''
 for epoch in range(20):
 
     ''' Notice: output indice to see if different sampling strategy output different offsets '''
     for idx, (input, target) in enumerate(train_loader):
-
-        # import pdb;pdb.set_trace()
-        # early stop for testing
-        # if idx > 50:
-        #     break
 
         # merge batch dimension with frame number
         data = input.view(-1, 3, input.size(-2), input.size(-1))
@@ -180,8 +133,6 @@ for epoch in range(20):
         ''' repeat target tensor to [batch * frame] '''
         target = target.unsqueeze(1).repeat(1, num_seg-1).view(-1).cuda()
 
-        # output = loss(input, target)
-        # values, indices = torch.max(tensor, 0)
         ''' 7x7 loss '''
         loss1 = criterion(rst1, target)
 
@@ -193,7 +144,6 @@ for epoch in range(20):
 
         loss1.backward(retain_graph=True)
         loss2.backward(retain_graph=True)
-        # loss2.backward()
         loss3.backward()
 
         ''' gradient clip '''
@@ -201,9 +151,7 @@ for epoch in range(20):
 
         optimizer.step()
 
-        print("Epoch {}, data batch {}, 7x7 loss is {}, 14x14 loss is {}, 28x28 loss is {}".format(epoch, idx, loss1.data[0].cpu(), loss2.data[0].cpu(), loss3.data[0].cpu()))
-        # print("Epoch {}, data batch {}, 7x7 loss is {}, 14x14 loss is {}, 28x28 loss is".format(epoch, idx, loss1.data[0].cpu(), loss2.data[0].cpu()))
-        # print("Epoch {}, data batch {}, 7x7 loss is {}".format(epoch, idx, loss1.data[0].cpu()))
+        print("Epoch {}, data batch {}, 7x7 loss is {}, 14x14 loss is {}, 28x28 loss is {}".format(epoch, idx, loss1.item(), loss2.item(), loss3.item()))
 
 state_name = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S') + '.pth'
 torch.save(net.state_dict(), state_name)

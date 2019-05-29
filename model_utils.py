@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 import torch.nn.init as init
 import numpy as np
-from BNInception import bninception
+# from BNInception import bninception
 from RGB_OFF import bninception_off
 import re, deprecated
 import pdb
@@ -226,6 +226,8 @@ def fine_tune_bninception_off(batch, num_seg):
 
     net = bninception_off(101, batch, num_seg)
     checkpoint = torch.load('/home/zhufl/Data2/caffe2pytorch-tsn/converted_rgb_off_ucf101_caffemodel.pth')
+    # checkpoint = torch.load('/home/zhufl/Temporal-Residual-Motion-Generation/tsn-pytorch/ucf101_rgb.pth') # checkpoint only has 416 i
+
     # checkpoint = torch.load('/home/zhufl/videoPrediction/train/' + '2019-01-08_22-42-50.pth')
 
     print("Number of parameters recovered from original caffemodel {}".format(len(checkpoint)))
